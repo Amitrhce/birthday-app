@@ -1,0 +1,15 @@
+For description of all files, read the Read.md
+ 
+Below commands used for deployment of application in real time environment. 
+
+To create the docker image and upload on gcr.
+gcloud builds submit --tag gcr.io/birth-246907/birth-app:v1 .
+
+To create the kubernetes cluster
+gcloud container clusters create birthday-app --num-nodes 3 --enable-basic-auth --issue-client-certificate --zone asia-east1-a
+
+To deploy app on Kubernetes cluster
+kubectl apply -f app.yaml
+
+Expose the app to the outside world
+kubectl expose deployment birth-app --type=LoadBalancer --port 80 --target-port 8080
