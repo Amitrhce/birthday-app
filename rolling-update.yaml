@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: birth-app
+  labels:
+    name: birthday-app
+spec:
+  replicas: 3
+  strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 25%
+  selector:
+    matchLabels:
+      name: birthday-app
+  template:
+    metadata:
+      name: birthday-app
+      labels:
+        name: birthday-app
+    spec:
+      containers:
+        - name: birth-app
+          image: gcr.io/birth-246907/birth-app:v2
+          ports:
+            - containerPort: 8080
+            readinessProbe:
+              httpGet:
+                path: /
+                port: 8080
+              initialDelaySeconds: 5
+              periodSeconds: 5
+              successThreshold: 1
+          resources:
+            requests:
+              memory: 256Mi
+            limits:
+              memory: 512Mi
+          env:
+            - name: DEBUG_MODE
+              value: "1"

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: birth-app
+  labels:
+    name: birthday-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: birthday-app
+  template:
+    metadata:
+      name: birthday-app
+      labels:
+        name: birthday-app
+    spec:
+      containers:
+        - name: birth-app
+          image: gcr.io/birth-246907/birth-app:v1
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: 256Mi
+            limits:
+              memory: 512Mi
+          env:
+            - name: DEBUG_MODE
+              value: "1"
